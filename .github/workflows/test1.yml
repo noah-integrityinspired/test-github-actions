@@ -16,12 +16,14 @@ jobs:
           standard=echo $final | sed 's/-*$//'
           dash_removed=echo $standard | sed 's/-//g'
           echo $final-$standard-$dash_removed
+          echo "::set-output name=pr::$(sed 's/-*$//' <<< $final)"
           echo "::set-output name=pr::$standard"
           echo "::set-output name=pr_dash_removed::$dash_removed"
           echo '::set-output name=SELECTED_COLOR::green'
     outputs:
-      standard: test${{env.standard}}
-      dash_removed: test${{env.dash_removed}}
+      pr: ${{steps.create.outputs.pr}}
+      standard: ${{steps.create.outputs.pr_standard}}
+      dash_removed: ${{steps.create.outputs.pr_dash_removed}}
       SELECTED_COLOR: ${{ steps.create.outputs.SELECTED_COLOR }}
   part2:
     runs-on: ubuntu-latest
@@ -30,6 +32,7 @@ jobs:
       - name: Use the value
         id: step_two
         run: |
+          echo "${{ needs.part1.outputs.pr }}" 
           echo "${{ needs.part1.outputs.SELECTED_COLOR }}" 
           echo "${{ needs.part1.outputs.standard }}" # This will output standard
           echo "${{ needs.part1.outputs.dash_removed }}" # This will otuput dash_removed
