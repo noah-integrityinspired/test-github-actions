@@ -20,7 +20,7 @@ jobs:
       - name: Create Resource Group Name
         id: create
         run: |
-          slug=${{test-03}}
+          slug=test-03
           sanitized=${slug//[^a-zA-Z0-9\-]/}
           final=${sanitized:0:12}
           standard=echo $final | sed 's/-*$//'
