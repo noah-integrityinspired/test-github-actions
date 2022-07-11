@@ -13,8 +13,8 @@ jobs:
           echo $slug
           sanitized=${slug//[^a-zA-Z0-9\-]/}
           final=${sanitized:0:12}
-          standard=echo $final | sed 's/-*$//'
-          dash_removed=echo $standard | sed 's/-//g'
+          standard=$(echo $final | sed 's/-*$//')
+          dash_removed=$(echo $standard | sed 's/-//g')
           echo $final-$standard-$dash_removed
           echo "::set-output name=slug::$slug"
           echo "::set-output name=pr::$(sed 's/-*$//' <<< $final)"
