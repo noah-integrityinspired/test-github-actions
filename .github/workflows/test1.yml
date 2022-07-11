@@ -17,7 +17,7 @@ jobs:
           dash_removed=echo $standard | sed 's/-//g'
           echo $final-$standard-$dash_removed
           echo "::set-output name=pr::$(sed 's/-*$//' <<< $final)"
-          echo "::set-output name=pr::$standard"
+          echo "::set-output name=pr_standard::$standard"
           echo "::set-output name=pr_dash_removed::$dash_removed"
           echo '::set-output name=SELECTED_COLOR::green'
     outputs:
