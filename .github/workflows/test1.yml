@@ -4,9 +4,6 @@ jobs:
   part1:
     runs-on: ubuntu-latest
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Set the value
         id: step_one
         run: |
@@ -15,8 +12,6 @@ jobs:
         id: step_two
         run: |
           echo "${{ env.action_state }}" # This will output 'yellow'
-      - name: Check out repository code
-        uses: actions/checkout@v3
       - name: Create Resource Group Name
         id: create
         run: |
@@ -25,6 +20,7 @@ jobs:
           final=${sanitized:0:12}
           standard=echo $final | sed 's/-*$//'
           dash_removed=echo $standard | sed 's/-//g'
+          echo $final-$standard-$dash_removed
           echo "::set-output name=pr::$standard"
           echo "::set-output name=pr_dash_removed::$dash_removed"
           echo '::set-output name=SELECTED_COLOR::green'
