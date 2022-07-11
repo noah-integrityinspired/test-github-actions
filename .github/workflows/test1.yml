@@ -9,20 +9,20 @@ jobs:
       - name: Create Resource Group Name
         id: create
         run: |
-          slug=${{ env.GITHUB_HEAD_REF_SLUG }}
+          slug="abf-efg-123"
           echo $slug
           sanitized=${slug//[^a-zA-Z0-9\-]/}
           final=${sanitized:0:12}
           standard=echo $final | sed 's/-*$//'
           dash_removed=echo $standard | sed 's/-//g'
-          standard=bill
-          dash_removed=bob
           echo $final-$standard-$dash_removed
+          echo "::set-output name=slug::$slug"
           echo "::set-output name=pr::$(sed 's/-*$//' <<< $final)"
           echo "::set-output name=pr_standard::$standard"
           echo "::set-output name=pr_dash_removed::$dash_removed"
           echo '::set-output name=SELECTED_COLOR::green'
     outputs:
+      slug: $${{steps.create.outputs.slug}}
       pr: ${{steps.create.outputs.pr}}
       standard: ${{steps.create.outputs.pr_standard}}
       dash_removed: ${{steps.create.outputs.pr_dash_removed}}
@@ -34,6 +34,7 @@ jobs:
       - name: Use the value
         id: step_two
         run: |
+          echo "${{ needs.part1.outputs.slug }}" 
           echo "${{ needs.part1.outputs.pr }}" 
           echo "${{ needs.part1.outputs.SELECTED_COLOR }}" 
           echo "${{ needs.part1.outputs.standard }}" # This will output standard
